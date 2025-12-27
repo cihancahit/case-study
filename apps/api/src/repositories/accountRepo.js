@@ -1,4 +1,4 @@
-import { getDb } from "./store";
+import { getDb } from "./store.js";
 
 export const accountRepo = {
     findById: (id) => {

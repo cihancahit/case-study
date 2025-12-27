@@ -1,4 +1,4 @@
-import { getDb } from "./store";
+import { getDb } from "./store.js";
 
 const ACTIVE_STATUSES = new Set(['ASSIGNED', 'IN_PROGRESS']);
 

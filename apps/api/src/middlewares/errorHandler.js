@@ -1,6 +1,5 @@
 import { ZodError } from "zod";
 import { AppError } from "../utils/appError.js";
-import { request } from "express";
 
 const buildErr = (req,code,message,details = null) =>({
     error:{code,message,details,requestId:req.requestId || null},

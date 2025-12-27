@@ -1,4 +1,4 @@
-import { id } from "zod/locales";
+
 
 export const seed = {
     accounts: [

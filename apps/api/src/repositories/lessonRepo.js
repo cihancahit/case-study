@@ -1,4 +1,4 @@
-import { getDb } from "./store";
+import { getDb } from "./store.js";
 
 export const lessonRepo = {
     createRequest(reqObj){
@@ -20,5 +20,12 @@ export const lessonRepo = {
     listByUserId(userId) {
         const db = getDb();
         return db.lessonRequests.filter(r => r.userId === userId);
+    },
+    updateRequestStatus(id, status) {
+        const r = this.findRequestById(id);
+        if (!r) return null;
+        r.status = status;
+        r.updatedAt = new Date().toISOString();
+        return r;
     }
 }
