@@ -2,7 +2,7 @@ import { getDb } from "./store.js";
 
 const ACTIVE_STATUSES = new Set(['ASSIGNED', 'IN_PROGRESS']);
 
-export const assigmentRepo = {
+export const assignmentRepo = {
     createAssignement(assignment) {
         const db = getDb();
         db.assignments.push(assignment);

@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { notificationRepo } from "../repositories/notificationRepo";
+import { notificationRepo } from "../repositories/notificationRepo.js";
 
 export const NotificationService = {
     notify:(toAccountId, type, payload) => {

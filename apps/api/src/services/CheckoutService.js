@@ -1,13 +1,12 @@
 import { nanoid } from 'nanoid';
 
-import { getPaymentProvider } from './PaymentProvider.js';
-import { courceRepo } from '../repositories/courceRepo.js';
-import { checkoutRepo } from '../repositories/checkoutRepo';
+import { getPaymentProvider } from './PaymentProvider/index.js';
+import { courseRepo } from '../repositories/courseRepo.js';
+import { checkoutRepo } from '../repositories/checkoutRepo.js';
 import { paymentRepo } from '../repositories/paymentRepo.js';
-import { entitilementRepo } from '../repositories/entitlementRepo.js';
+import { entitlementRepo } from '../repositories/entitlementRepo.js';
 import { NotificationService } from './NotificationService.js';
 import { E } from '../utils/appError.js';
-import { check } from 'zod';
 
 function assertOwner(checkout, userId) {
   if (!checkout || checkout.userId !== userId) {
@@ -21,7 +20,7 @@ function nowIsoString() {
 
 export const CheckoutService = {
   async createCheckout({ userId, courseId, idempotencyKey }) {
-    const course = courceRepo.getById(courseId);
+    const course = courseRepo.getById(courseId);
     if (!course) {
       throw E.notFound('COURSE_NOT_FOUND', 'Course not found');
     }
@@ -72,7 +71,7 @@ export const CheckoutService = {
     }
 
     if (checkout.status === 'COMPLETED') {
-      return { checkout, entitlement: entitilementRepo.findActive(userId, checkout.courseId) };
+      return { checkout, entitlement: entitlementRepo.findActive(userId, checkout.courseId) };
     }
 
     if (result === 'fail') {
@@ -103,7 +102,7 @@ export const CheckoutService = {
     if (checkout.status === 'COMPLETED') {
       return {
         checkout,
-        entitlement: entitilementRepo.findActive(userId, checkout.courseId),
+        entitlement: entitlementRepo.findActive(userId, checkout.courseId),
       };
     }
     const provider = getPaymentProvider();
@@ -135,11 +134,11 @@ export const CheckoutService = {
     return { checkout: checkoutRepo.findById(checkoutId), entitlement };
   },
   grantEntitlement({ userId, courseId, checkoutId }) {
-    const existing = entitilementRepo.findActive(userId, courseId);
+    const existing = entitlementRepo.findActive(userId, courseId);
     if (existing) {
       return existing;
     }
-    const entitlement = entitilementRepo.create({
+    const entitlement = entitlementRepo.create({
       id: nanoid(),
       userId,
       courseId,

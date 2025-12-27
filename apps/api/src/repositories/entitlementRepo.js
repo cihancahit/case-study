@@ -1,6 +1,6 @@
 import { getDb } from "./store.js";
 
-export const entitilementRepo = {
+export const entitlementRepo = {
     findActive(userId, courseId) {
         const db = getDb();
         return db.entitlements.find(

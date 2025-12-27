@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 
 import { accountRepo } from '../repositories/accountRepo.js';
 import { lessonRepo } from '../repositories/lessonRepo.js';
-import { assigmentRepo } from '../repositories/assigmentRepo.js';
+import { assignmentRepo } from '../repositories/assignmentRepo.js';
 import { NotificationService } from './NotificationService.js';
 import { E } from '../utils/appError.js';
 
@@ -28,14 +28,14 @@ export const MatchingService = {
       throw E.conflict('NO_INSTRUCTORS_AVAILABLE', 'No instructors available for matching');
     }
     const chosen = instructors.find((ins) => {
-      const active = assigmentRepo.listActiveByInstructorId(ins.id);
+      const active = assignmentRepo.listActiveByInstructorId(ins.id);
       return active.length === 0;
     });
     if (!chosen) {
       throw E.conflict('NO_INSTRUCTORS_AVAILABLE', 'No instructors available for matching');
     }
 
-    const assignment = assigmentRepo.createAssignement({
+    const assignment = assignmentRepo.createAssignement({
       id: nanoid(),
       requestId: reqObj.id,
       instructorId: chosen.id,
@@ -54,7 +54,7 @@ export const MatchingService = {
     return { assignment, instructorId: chosen.id };
   },
   acceptAssignment({ instructorId, assignmentId }) {
-    const assignment = assigmentRepo.findById(assignmentId);
+    const assignment = assignmentRepo.findById(assignmentId);
     if (!assignment) throw E.notFound('ASSIGNMENT_NOT_FOUND', 'Assignment not found');
     if (assignment.instructorId !== instructorId) {
       throw E.forbidden('UNAUTHORIZED', 'You are not authorized to accept this assignment');
@@ -66,13 +66,13 @@ export const MatchingService = {
       );
     }
 
-    assigmentRepo.updateStatus(assignment.id, 'ACCEPTED');
+    assignmentRepo.updateStatus(assignment.id, 'ACCEPTED');
     lessonRepo.updateRequestStatus(assignment.requestId, 'CONFIRMED');
 
-    return { assignment: assigmentRepo.findById(assignment.id) };
+    return { assignment: assignmentRepo.findById(assignment.id) };
   },
   rejectAssignment({ instructorId, assignmentId }) {
-    const assignment = assigmentRepo.findById(assignmentId);
+    const assignment = assignmentRepo.findById(assignmentId);
     if (!assignment) throw E.notFound('ASSIGNMENT_NOT_FOUND', 'Assignment not found');
     if (assignment.instructorId !== instructorId) {
       throw E.forbidden('UNAUTHORIZED', 'You are not authorized to reject this assignment');
@@ -84,9 +84,9 @@ export const MatchingService = {
       );
     }
 
-    assigmentRepo.updateStatus(assignment.id, 'REJECTED');
+    assignmentRepo.updateStatus(assignment.id, 'REJECTED');
     lessonRepo.updateRequestStatus(assignment.requestId, 'OPEN');
 
-    return { assignment: assigmentRepo.findById(assignment.id) };
+    return { assignment: assignmentRepo.findById(assignment.id) };
   },
 };

@@ -1,6 +1,6 @@
 import { getDb } from "./store.js";
 
-export const courceRepo = {
+export const courseRepo = {
     findById: (id) => {
         const db = getDb();
         return db.courses.find(course => course.id === id) || null;
