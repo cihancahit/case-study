@@ -15,7 +15,7 @@ export const entitlementRepo = {
             db.entitlements.push(entitlement);
             return entitlement; 
         },
-    listByUSerId(userId) {
+    listByUserId(userId) {
         const db = getDb();
         return db.entitlements.filter(entitlement => entitlement.userId === userId);
     }

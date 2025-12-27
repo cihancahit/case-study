@@ -20,7 +20,7 @@ function nowIsoString() {
 
 export const CheckoutService = {
   async createCheckout({ userId, courseId, idempotencyKey }) {
-    const course = courseRepo.getById(courseId);
+    const course = courseRepo.findById(courseId);
     if (!course) {
       throw E.notFound('COURSE_NOT_FOUND', 'Course not found');
     }

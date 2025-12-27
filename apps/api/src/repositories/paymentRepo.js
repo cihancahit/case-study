@@ -12,7 +12,7 @@ export const paymentRepo = {
         return list[list.length - 1];
     },
     updateStatus(id, status){
-        const o = this.findLatestById(id);
+        const o = this.findLatestByCheckoutId(id);
         if (!o) return null;
         o.status = status;
         o.updatedAt = new Date().toISOString();

@@ -15,9 +15,9 @@ export const MatchingService = {
     const reqObj = lessonRepo.findRequestById(requestId);
     if (!reqObj) throw E.notFound('REQUEST_NOT_FOUND', 'Lesson request not found');
 
-    if (reqObj.userId === requesterUserId) {
-      throw E.badRequest('INVALID_MATCH', 'Cannot match own lesson request');
-    }
+    // if (reqObj.userId === requesterUserId) {
+    //   throw E.badRequest('INVALID_MATCH', 'Cannot match own lesson request');
+    // }
 
     if (reqObj.status !== 'OPEN') {
       throw E.badRequest('INVALID_REQUEST_STATUS', 'Lesson request is not open for matching');
@@ -44,9 +44,9 @@ export const MatchingService = {
       updatedAt: nowIsoString(),
     });
 
-    lessonRepo.updateRequeststatus(reqObj.id, 'ASSIGNED');
+    lessonRepo.updateRequestStatus(reqObj.id, 'ASSIGNED');
 
-    NotificationService.sendNotification(chosen.id, 'LESSON_ASSIGNED', {
+    NotificationService.notify(chosen.id, 'LESSON_ASSIGNED', {
       assignmentId: assignment.id,
       requestId: reqObj.id,
       userId: reqObj.userId,
