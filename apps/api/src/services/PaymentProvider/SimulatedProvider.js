@@ -7,7 +7,7 @@ export const SimulatedProvider = {
     return { checkoutUrl: null, providerRef: `simulated_${checkoutId}` };
   },
 
-  async veryfySessionPaid() {
-    return { paid: fa };
+  async verifySessionPaid() {
+    return { paid: false };
   },
 };
