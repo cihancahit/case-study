@@ -18,9 +18,9 @@ export const StripeProvider = {
       line_items: [
         {
           price_data: {
-            currency: courceRepo.price.currency.toLowerCase(),
+            currency: course.price.currency.toLowerCase(),
             product_data: { name: course.title },
-            unit_amount: courceRepo.price.amount,
+            unit_amount: course.price.amount,
           },
           quantity: 1,
         },
