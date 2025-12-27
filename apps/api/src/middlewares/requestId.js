@@ -1,4 +1,4 @@
-import { nanoid } from "zod";
+import { nanoid } from "nanoid";
 
 export function requestId(req, res, next) {
     req.requestId = nanoid();
