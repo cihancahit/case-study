@@ -30,8 +30,18 @@ router.post(
       createdAt: now,
       updatedAt: now,
     });
+    let matchResult = null;
+    try {
+        matchResult = MatchingService.matchRequest({
+          requestId: reqObj.id,
+          requesterUserId: "SYSTEM_AUTO_MATCH",
+        });
+    } catch (error) {
+        // Auto-matching failed, proceed without matching
+        matchResult = null;
+    }
 
-    res.json({ data: reqObj, requestId: req.requestId });
+    res.json({ data: { request: reqObj, match: matchResult }, requestId: req.requestId });
   })
 );
 
